@@ -25,6 +25,18 @@ const Admin = () => {
 		}
 	};
 
+	const deletePost = async (id) => {
+		try {
+			await blogFetch.delete(`/posts/${id}`);
+
+			const filteredPosts = posts.filter((post) => post.id !== id);
+
+			setPosts(filteredPosts);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		getPosts();
@@ -41,7 +53,13 @@ const Admin = () => {
 						<h2>{post.title}</h2>
 						<div className="actions">
 							<Link className="btn edit-btn">Editar</Link>
-							<button className="btn delete-btn">Excluir</button>
+							{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+							<button
+								className="btn delete-btn"
+								onClick={() => deletePost(post.id)}
+							>
+								Excluir
+							</button>
 						</div>
 					</div>
 				))
